@@ -1,2 +1,0 @@
-# CursoRobocorp
-Curso para automações

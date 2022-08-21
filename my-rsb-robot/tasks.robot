@@ -2,6 +2,8 @@
 Documentation       Insert the sales data for the week and export it as a PDF.
 
 Library             RPA.Browser.Selenium    auto_close=${FALSE}
+Library             RPA.HTTP
+Library             RPA.Excel.Files
 Library             Collections
 Library             MyLibrary
 Resource            keywords.robot
@@ -12,7 +14,8 @@ Variables           MyVariables.py
 Insert the sales data for the week and export it as a PDF
     Open the intranet website
     log in
-    Fill and submit the form
+    Download the Excel file
+    Fill the form using the data from the Excel file
 
 Example task
     Example Keyword
@@ -30,5 +33,17 @@ Log in
     Submit Form
     Wait Until Page Contains Element    id:sales-form
 
+Download the Excel file
+    Download    https://robotsparebinindustries.com/SalesData.xlsx    overwrite=True
+
 Fill and submit the form
+    Input Text    firstname    Edson
+    Input Text    lastname    Padilha
+    Input Text    salesresult    545
+    Select From List By Value    salestarget    10000
     Click Button    Submit
+
+Fill the form using the data from the Excel file
+    Open Workbook    SalesData.xlsx
+    ${sales_reps}=    Read Worksheet As Table    header=True
+    Close Workbook
