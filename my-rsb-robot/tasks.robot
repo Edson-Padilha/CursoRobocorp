@@ -36,14 +36,18 @@ Log in
 Download the Excel file
     Download    https://robotsparebinindustries.com/SalesData.xlsx    overwrite=True
 
-Fill and submit the form
-    Input Text    firstname    Edson
-    Input Text    lastname    Padilha
-    Input Text    salesresult    545
-    Select From List By Value    salestarget    10000
+Fill and submit the form for one person
+    [Arguments]    ${sales_rep}
+    Input Text    firstname    ${sales_rep}[First Name]
+    Input Text    lastname    ${sales_rep}[Last Name]
+    Input Text    salesresult    ${sales_rep}[Sales]
+    Select From List By Value    salestarget    ${sales_rep}[Sales Target]
     Click Button    Submit
 
 Fill the form using the data from the Excel file
     Open Workbook    SalesData.xlsx
     ${sales_reps}=    Read Worksheet As Table    header=True
     Close Workbook
+    FOR    ${sales_rep}    IN    @{sales_reps}
+        Fill and submit the form for one person    ${sales_rep}
+    END
